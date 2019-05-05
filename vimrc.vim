@@ -10,15 +10,8 @@ set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 " Plug 'junegunn/vim-easy-align'
 " Plug 'https://github.com/junegunn/vim-github-dashboard.git'
-""if (s:os_type == 'unix')
-""    print ('unix')
-""endif
-""
-""if (s:os_type == 'win32')
-""    print ('windows')
-""endif
 
-" Autoinstall PlugInstall on unix-like system - to install or update plugins:
+" Autoinstall Vim-Plug on unix-like system - to install or update plugins:
 if has('unix')
   if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -34,7 +27,6 @@ Plug 'https://github.com/easymotion/vim-easymotion'     "\\s to jump to letter
 Plug 'vim-scripts/taglist.vim'                          " TlistToggle command to open/close the taglist
 Plug 'https://github.com/scrooloose/nerdtree'           "help NERD_tree.txt
 Plug 'https://github.com/nvie/vim-flake8'
-" Plug 'https://github.com/vim-syntastic/syntastic'
 Plug 'https://github.com/jceb/vim-orgmode'
 Plug 'https://github.com/w0rp/ale.git'
 Plug 'https://github.com/majutsushi/tagbar'
@@ -46,7 +38,7 @@ call plug#end()
 "auto-close preview window after exit INSERT mode
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
-"ALE options:
+"ALE plugin options:
 let g:ale_sign_column_always = 1
 let g:airline#extensions#ale#enabled = 1
 nmap <silent> [n <Plug>(ale_previous_wrap)
@@ -59,8 +51,8 @@ let g:ale_set_quickfix = 1  "quickfix window ON
 " :help ale-linter-options
 " :help ale#statusline#Count()
 " :help ale-lint-file-linters
-"
-" Tagbat:
+
+" Tagbar set to F8:
 nmap <F8> :TagbarToggle<CR><C-w>w
 
 " Backup, swap and undo files:
@@ -68,54 +60,38 @@ set backupdir=$HOME/vimfiles/.backup/,~/.backup/,/tmp//,$TEMP/vimtmp/,$VIMRUNTIM
 set directory=$HOME/vimfiles/.swp/,~/.swp/,/tmp//,$TEMP/vimtmp/,$VIMRUNTIME\\tmp\\\\
 set undodir=$HOME/vimfiles/.undo/,~/.undo/,/tmp//,$TEMP/vimtmp/,$VIMRUNTIME\\tmp\\\\
 
-"Syntastic options
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 0
-" let g:syntastic_check_on_wq = 0
-""" let g:syntastic_py_pylint_args = "--disable=R0903"
-""" let g:syntastic_py_pylint_args = "--rcfile=C:\Users\Asus\AppData\Local\Programs\Python\Python36-32\Lib\site-packages\pylint\standart.rc"
-" map ]n :lnext<CR>
-" map [n :lprevious<CR>
-" map [<space> :lfirst<CR>
-" map ]<space> :llast<CR>
-
-"Настройки табов для Python, согласно рекоммендациям
+"Tabs for Python
 set tabstop=4 
 set shiftwidth=4
 set smarttab
-set expandtab "Ставим табы пробелами
-set softtabstop=4 "4 пробела в табе
-"Автоотступ
+set expandtab "Tabs after spaces
+set softtabstop=4 "4 spaces in 1 tab
 set autoindent
-"Подсвечиваем все что можно подсвечивать
+" highlight all what is possible to highlight
 let python_highlight_all = 1
-"Включаем 256 цветов в терминале, мы ведь работаем из иксов?
-"Нужно во многих терминалах, например в gnome-terminal
+"set 256 colors, it's needed in many terminals, for example in gnome-terminal
 set t_Co=256
 
-"Автоматическая смена рабочего каталога на каталог открытого файла
+"Auto change workdir to dir of opened file
 set autochdir
 "
-"Настройка omnicomletion для Python (а так же для js, html и css)
+"Setting omnicomletion for Python (and also for js, html and css)
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-"
-"Авто комплит по табу
+
+"Autocomple by tab
 function InsertTabWrapper()
-let col = col('.') - 1
-if !col || getline('.')[col - 1] !~ '\k'
-return "\"
-else
-return "\<c-p>"
-endif
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\"
+  else
+    return "\<c-p>"
+  endif
 endfunction
-"Показываем все полезные опции автокомплита сразу
+
+" Show all autocomplete options
 "imap <c-r>=InsertTabWrapper() 
 set complete=""
 set complete+=.
@@ -123,138 +99,49 @@ set complete+=k
 set complete+=b
 set complete+=t
 "
-"Перед сохранением вырезаем пробелы на концах (только в .py файлах)
+" Trunc spaces before save (only in .py files)
 autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
-"В .py файлах включаем умные отступы после ключевых слов
+" In .py files turn on smart indents after keywords
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 "
-""""Дальше мои личные настройки, 
-""""в принципе довольно обычные, может кому надо
 "
-"Вызываем SnippletsEmu(см. дальше в топике) по ctrl-j
-"вместо tab по умолчанию (на табе автокомплит)
+" call SnippletsEmu using ctrl-j
+" insted tab by defaults (tab is used for autocomplete)
 let g:snippetsEmu_key = "<C-j>"
 "
-colorscheme vombato "(wombat была) Цветовая схема
+colorscheme vombato
 set guifont=hack:h11
-syntax on "Включить подсветку синтаксиса
-set nu "Включаем нумерацию строк
-set mousehide "Спрятать курсор мыши когда набираем текст
-set mouse=a "Включить поддержку мыши
-set termencoding=utf-8 "Кодировка терминала
-set novisualbell "Не мигать 
-set t_vb= "Не пищать! (Опции 'не портить текст', к сожалению, нету)
-"Удобное поведение backspace
+syntax on
+set nu " lines number on
+set mousehide "when typing text
+set mouse=a "Turn mouse support on
+set termencoding=utf-8 
+set novisualbell "don't blink
+set t_vb= "don't squeak
+"smart backspace
 set backspace=indent,eol,start whichwrap+=<,>,[,]
-"Вырубаем черточки на табах
+"Don't showtabline
 set showtabline=0
-"Колоночка, чтобы показывать плюсики для скрытия блоков кода:
+"Column for show "+" on code blocks
 set foldcolumn=1
-"
-"Переносим на другую строчку, разрываем строки
+" transfer long lines to other line, break lines.
+" Change only how file is dispalyed
 set wrap
 set linebreak
-"
-"Вырубаем .swp и ~ (резервные) файлы
-set nobackup
-set noswapfile
-set encoding=utf-8 " Кодировка файлов по умолчанию
-set fileencodings=utf8,cp1251 " Возможные кодировки файлов, если файл не в unicode кодировке,
-" то будет использоваться cp1251
-"
-"Vziato otsuda:
-"https://habrahabr.ru/post/74128/
-" ========КОНЕЦ================
-" NERDTree ON
-"autocmd vimenter * NERDTree
-"
-"
-source $VIMRUNTIME/vimrc_example.vim
-source $VIMRUNTIME/mswin.vim
-behave mswin
-"
-set diffexpr=MyDiff()
+
+set encoding=utf-8 " Encoding for files by default
+set fileencodings=utf8,cp1251 " Possible file encodings, if no unicode we will use cp1251
+
+set history=1000 " Prefer to save long commands and search patterns history
+
+" highlights the search when typing
 set incsearch
-"
-if v:progname =~? "evim"
-  finish
-endif
-"
-" Get the defaults that most users want.
-"source $VIMRUNTIME/defaults.vim
-"
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file (restore to previous version)
-  if has('persistent_undo')
-    set undofile	" keep an undo file (undo changes after closing)
-  endif
-endif
-"
-if &t_Co > 2 || has("gui_running")
-  " Switch on highlighting the last used search pattern.
-  set hlsearch
-endif
-"
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-"
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-"
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-"
-  augroup END
-"
-else
-"
-  set autoindent		" always set autoindenting on
-"
-endif " has("autocmd")
-"
-" Add optional packages.
-"
-" The matchit plugin makes the % command work better, but it is not backwards
-" compatible.
-if has('syntax') && has('eval')
-  packadd matchit
-endif
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      if empty(&shellxquote)
-        let l:shxq_sav = ''
-        set shellxquote&
-      endif
-      let cmd = '"' . $VIMRUNTIME . '\diff"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
-  if exists('l:shxq_sav')
-    let &shellxquote=l:shxq_sav
-  endif
-endfunction
-"
+
+" Use python3
 let g:pymode_python = 'python3'
-"поиск в текущем и дочерних каталогах слова под курсором
+"
+" use F4 for search in current and all included dirs
 map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-"cd d:\Python\
 
 " ===Indent Python in the Google way.===
 
@@ -290,5 +177,46 @@ function GetGooglePythonIndent(lnum)
 
 endfunction
 
+" indent after an nested paren
 let pyindent_nested_paren="&sw*2"
+" indent after an open paren
 let pyindent_open_paren="&sw*2"
+" The matchit plugin makes the % command work better, but it is not backwards
+" compatible.
+" For example you can % by if and endif
+if has('syntax') && has('eval')
+  packadd matchit
+endif
+
+" Default function for comparing two buffers by diff command
+set diffexpr=MyDiff()
+
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunction
+"
