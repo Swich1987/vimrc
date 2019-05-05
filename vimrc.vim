@@ -18,7 +18,15 @@ set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
 ""    print ('windows')
 ""endif
 
-"call plug#begin('~/.vim/bundle')
+" Autoinstall PlugInstall on unix-like system - to install or update plugins:
+if has('unix')
+  if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
+endif
+
 call plug#begin()
 Plug 'https://github.com/bronsen/vombato-colorscheme'
 Plug 'https://github.com/Valloric/YouCompleteMe', { 'do': '.\install.py' }        "Autocomplete code
@@ -34,7 +42,6 @@ Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Yggdroot/LeaderF', { 'do': '.\install.bat' }
 call plug#end()
-"PlugInstall "-to install or update plugins
 
 "auto-close preview window after exit INSERT mode
 let g:ycm_autoclose_preview_window_after_insertion = 1
