@@ -56,6 +56,11 @@ let g:ale_set_quickfix = 1  "quickfix window ON
 " Tagbat:
 nmap <F8> :TagbarToggle<CR><C-w>w
 
+" Backup, swap and undo files:
+set backupdir=$HOME/vimfiles/.backup/,~/.backup/,/tmp//,$TEMP/vimtmp/,$VIMRUNTIME\\tmp\\\\
+set directory=$HOME/vimfiles/.swp/,~/.swp/,/tmp//,$TEMP/vimtmp/,$VIMRUNTIME\\tmp\\\\
+set undodir=$HOME/vimfiles/.undo/,~/.undo/,/tmp//,$TEMP/vimtmp/,$VIMRUNTIME\\tmp\\\\
+
 "Syntastic options
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
@@ -71,9 +76,6 @@ nmap <F8> :TagbarToggle<CR><C-w>w
 " map [<space> :lfirst<CR>
 " map ]<space> :llast<CR>
 
-"Хранение временных файлов в другой директории
-set backupdir=$TEMP//
-set directory=$TEMP//
 "Настройки табов для Python, согласно рекоммендациям
 set tabstop=4 
 set shiftwidth=4
