@@ -20,9 +20,20 @@ if has('unix')
   endif
 endif
 
+function! BuildYCM(pluginfo)
+    " pluginfo is a dictionary with 3 fields
+    " - name: name of the plugin
+    " - status: 'installed', 'updated', or 'unchanged'
+    " - force: set on PlugInstall! or PlugUpdate!
+    if a:info.status == 'installed' || a:info.force
+        !./install.py
+    endif
+endfunction
+
 call plug#begin()
 Plug 'https://github.com/bronsen/vombato-colorscheme'
-Plug 'https://github.com/Valloric/YouCompleteMe', { 'do': '.\install.py' }        "Autocomplete code
+" YouCompleteMe for Autocomplete code
+Plug 'https://github.com/Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'https://github.com/easymotion/vim-easymotion'     "\\s to jump to letter
 Plug 'vim-scripts/taglist.vim'                          " TlistToggle command to open/close the taglist
 Plug 'https://github.com/scrooloose/nerdtree'           "help NERD_tree.txt
