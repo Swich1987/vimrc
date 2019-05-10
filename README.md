@@ -4,16 +4,20 @@ It's just my vimrc file, which I use from time to time. Currently, I'm using IDE
 
 You can download only vimrc using this:
 
-    curl https://raw.githubusercontent.com/Swich1987/vimrc/master/vimrc.vim >> ~/.vimrc
+    wget -O .vimrc https://raw.githubusercontent.com/Swich1987/vimrc/master/vimrc.vim
 
 # Auto-installation
-Download sh script:
+For auto-installation of vimrc with all plugins, you can use script `install_vimrc`.
+WARNING: it will replace your ~/.vimrc file
 
-    curl https://raw.githubusercontent.com/Swich1987/vimrc/master/install_vimrc.sh >> ~/install_vimrc.sh
-    
-Then simple launch it:
-    
+
+Download, give permission and execute sh script:
+
+    wget https://raw.githubusercontent.com/Swich1987/vimrc/master/install_vimrc.sh
+    chmod +x install_vimrc.sh
     ./install_vimrc.sh
+    
+You will be asked to enter sudo password. Installation take some time (up to 8 min on my PC).
 
 # Manual Installation
 ## Ctags problems

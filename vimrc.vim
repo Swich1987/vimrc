@@ -14,8 +14,9 @@ set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
 " Autoinstall Vim-Plug on unix-like system - to install or update plugins:
 if has('unix')
   if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    silent !(mkdir -p ~/.vim/autoload ;
+      \ wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      \ -P ~/.vim/autoload)
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
 endif
@@ -120,7 +121,7 @@ autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,
 " insted tab by defaults (tab is used for autocomplete)
 let g:snippetsEmu_key = "<C-j>"
 "
-colorscheme vombato
+silent colorscheme vombato
 set guifont=hack:h11
 syntax on
 set nu " lines number on
